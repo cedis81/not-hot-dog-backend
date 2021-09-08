@@ -23,6 +23,26 @@ app.get('/', (req, res) => {
   res.json(database.users)
 })
 
+app.post('/signin', (req, res) => {
+  db.select('email', 'hash').from('login')
+    .where('email', '=', req.body.email)
+    .then(user => {
+      return bcrypt.compare(req.body.password, user[0].hash);
+    })
+    .then(user => {
+      if (user) {
+        return db.select('*').from('users')
+          .where('email', '=', req.body.email)
+          .then(user=> {
+            res.json(user)
+          })
+          .catch(err=> res.status(400).json('error fetching user'))
+      } else {
+        res.status(400).json('invalid credentials')}
+    })
+    .catch(err => res.status(400).json('failed to sign in'))
+})
+
 app.post('/register', async (req, res) => {
   const { email, name, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10)

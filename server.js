@@ -19,46 +19,37 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const database = {
-  users: [
-    {
-      id: '123',
-      name: 'john',
-      email: 'john@gmail.com',
-      password: 'cookies',
-      entries: 3,
-      hotdogs: 4,
-      joined: new Date()
-    },
-    {
-      id: '124',
-      name: 'Sally',
-      email: 'Sally@gmail.com',
-      password: 'diu',
-      entries: 3,
-      hotdogs: 5,
-      joined: new Date()
-    }
-  ]
-}
-
 app.get('/', (req, res) => {
   res.json(database.users)
 })
 
-app.post('/register', (req, res) => {
+app.post('/register', async (req, res) => {
   const { email, name, password } = req.body;
-  db('users')
-    .returning('*')
-    .insert({
-      email: email,
-      name: name,
-      joined: new Date()
+  const hashedPassword = await bcrypt.hash(password, 10)
+
+  db.transaction(trx => {
+    trx.insert({
+      hash: hashedPassword,
+      email: email
     })
-    .then(user => {
-      res.json(user[0]);
+    .into('login')
+    .returning('email')
+    .then(loginEmail => {
+      return trx('users')
+      .returning('*')
+      .insert({
+        email: loginEmail[0],
+        name: name,
+        joined: new Date()
+      })
+      .then(user => {
+        res.json(user[0]);
+      })
     })
-    .catch(err => res.status(400).json('unable to register'));
+    .then(trx.commit)
+    .catch(trx.rollback)
+  })
+  .catch(err => res.status(400).json('unable to register'));
 })
 
 app.get('/profile/:id', (req, res) => {

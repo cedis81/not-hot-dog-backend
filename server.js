@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const knex = require('knex');
 
 const register = require('./controllers/register');
+const signin = require('./controllers/signin');
 
 const db = knex({
   client: 'pg',
@@ -25,27 +26,9 @@ app.get('/', (req, res) => {
   res.json(database.users)
 })
 
-app.post('/signin', (req, res) => {
-  db.select('email', 'hash').from('login')
-    .where('email', '=', req.body.email)
-    .then(user => {
-      return bcrypt.compare(req.body.password, user[0].hash);
-    })
-    .then(user => {
-      if (user) {
-        return db.select('*').from('users')
-          .where('email', '=', req.body.email)
-          .then(user=> {
-            res.json(user)
-          })
-          .catch(err=> res.status(400).json('error fetching user'))
-      } else {
-        res.status(400).json('invalid credentials')}
-    })
-    .catch(err => res.status(400).json('failed to sign in'))
-})
+app.post('/signin', (req, res) => {signin.handleSignIn(req, res, db, bcrypt)})
 
-app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
+app.post('/register', (req, res) => {register.handleRegister(req, res, db, bcrypt)})
 
 app.get('/profile/:id', (req, res) => {
   const { id } = req.params;

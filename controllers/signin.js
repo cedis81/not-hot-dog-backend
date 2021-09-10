@@ -19,5 +19,5 @@ const handleSignIn = (req, res, db, bcrypt) => {
 }
 
 module.exports = {
-  handleSignIn: handleSignIn
+  handleSignIn
 }

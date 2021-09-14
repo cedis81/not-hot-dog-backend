@@ -13,6 +13,7 @@ const db = knex({
   client: 'pg',
   connection: {
     // host : '127.0.0.1',
+    // database : 'hotdog'
     connectionString : process.env.DATABASE_URL,
     ssl: true
   }

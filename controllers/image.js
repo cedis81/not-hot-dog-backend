@@ -20,8 +20,10 @@ const handleApiCall = (req, res) => {
 
       if (clarifaiValueArray.length === 0) {
         return res.json('not hotdog')
-      } else if (clarifaiValueArray[0].value > .75) {
+      } else if (clarifaiValueArray[0].value >= .75) {
         return res.json('hotdog')
+      } else if (clarifaiValueArray[0].value < .75) {
+        return res.json('not hotdog')
       }
     }
   );

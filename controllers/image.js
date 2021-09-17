@@ -14,7 +14,7 @@ const handleApiCall = (req, res) => {
     metadata,
     (err, response) => {
       const clarifaiValueArray = response.outputs[0].data.concepts.filter(x=>x.name === 'hot dog' || x.name === 'hot dog bun').sort()
-      console.log(clarifaiValueArray)
+      
       if (err || response.status.code !== 10000) {
         return res.status(400).json(`Received failed status: ${response.status.description}`);
       }

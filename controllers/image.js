@@ -13,16 +13,22 @@ const handleApiCall = (req, res) => {
     },
     metadata,
     (err, response) => {
-      const clarifaiValueArray = response.outputs[0].data.concepts.filter(x=>x.name === 'hot dog')
+      const clarifaiValueArray = response.outputs[0].data.concepts.filter(x=>x.name === 'hot dog' || x.name === 'hot dog bun').sort()
+      console.log(clarifaiValueArray)
       if (err || response.status.code !== 10000) {
         return res.status(400).json(`Received failed status: ${response.status.description}`);
       }
 
+      //if array length === 1, must be hot dog only
+      //if array length === 2, first ele will be hot dog bun, second will be hot dog. both values over .55 will produce 'hotdog'
+
       if (clarifaiValueArray.length === 0) {
         return res.json('not hotdog')
-      } else if (clarifaiValueArray[0].value >= .75) {
+      } else if (clarifaiValueArray.length === 1 && clarifaiValueArray[0].value >= .75 && clarifaiValueArray[0].name === 'hot dog') {
         return res.json('hotdog')
-      } else if (clarifaiValueArray[0].value < .75) {
+      } else if (clarifaiValueArray.length === 2 && clarifaiValueArray[0].value >= .55 && clarifaiValueArray[1].value >= .55) {
+        return res.json('hotdog')
+      } else {
         return res.json('not hotdog')
       }
     }

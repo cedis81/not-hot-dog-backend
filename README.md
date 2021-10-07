@@ -57,7 +57,6 @@ CREATE TABLE users (
 
 | id | name | emails | entries | hotdogs | joined |
 |----|------|--------|---------|---------|--------|
-|    |      |        |         |         |        |
 
 **Login table**
 
@@ -71,7 +70,6 @@ CREATE TABLE login (
 
 | id | hash | email |
 |----|------|-------|
-|    |      |       |
 
 ### Technologies Used
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)

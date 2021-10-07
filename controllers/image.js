@@ -3,18 +3,21 @@ const {ClarifaiStub, grpc} = require("clarifai-nodejs-grpc");
 const stub = ClarifaiStub.grpc();
 
 const metadata = new grpc.Metadata();
+// You need to include your own API key here from Clarifai
 metadata.set("authorization", `Key ${process.env.API_KEY_CLARIFAI}`);
 
 const handleApiCall = (req, res) => {
   stub.PostModelOutputs(
     {
+      // The model_id below is the Clarifai food model
       model_id: "bd367be194cf45149e75f01d59f77ba7",
       inputs: [{data: {image: {url: `${req.body.imageUrl}`}}}]
     },
     metadata,
     (err, response) => {
+      // outputs[0].data.concepts is an array containing all the foods identified by the model
       const clarifaiValueArray = response.outputs[0].data.concepts.filter(x=>x.name === 'hot dog' || x.name === 'hot dog bun').sort()
-      
+
       if (err || response.status.code !== 10000) {
         return res.status(400).json(`Received failed status: ${response.status.description}`);
       }

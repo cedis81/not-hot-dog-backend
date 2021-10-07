@@ -26,10 +26,11 @@ A user will need to register and sign in to use the app (while the back end uses
 3. Run `npm start` to run website on local host 3000.
 4. Fork and clone front end [repository](https://github.com/cedis81/not-hot-dog).
 5. Install dependencies with `npm install`.
-6. Run 'npm start' to run website on local host.
+6. Run `npm start` to run website on local host.
 7. To publish on Github Pages, push your changes to Github.
-8. Run `npm run build` to deploy.
-9. Go on an interview with Emily Chang at Bloomberg Tech and talk about your new app [Seefood](https://twitter.com/TechAtBloomberg/status/863944535419666432?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E863944535419666432%7Ctwgr%5E%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fwww.engadget.com%2F2017-05-15-not-hotdog-app-hbo-silicon-valley.html). (Just kidding, please don't do this).
+8. Run `npm run build` to deploy front end app.
+9. Run `git push heroku main` to deploy back end app.
+10. Go on an interview with Emily Chang at Bloomberg Tech and talk about your new app [Seefood](https://twitter.com/TechAtBloomberg/status/863944535419666432?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E863944535419666432%7Ctwgr%5E%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fwww.engadget.com%2F2017-05-15-not-hotdog-app-hbo-silicon-valley.html). (Just kidding, please don't do this).
 
 Please note the following for this repo:
 
@@ -39,7 +40,7 @@ Please note the following for this repo:
 4. In image.js, you will need to use your own [Clarifai](https://www.clarifai.com/) API Key from the start, and there is a free version if you sign up.
 5. In image.js, you can change the criteria for identifying a food as a hotdog. Lines 25-33 contain that logic.
 
-Below are the tables created in PostgreSQL:
+Below are the tables created in the 'hotdog' database with PostgreSQL:
 
 **Users table**
 
